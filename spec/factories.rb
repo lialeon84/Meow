@@ -1,8 +1,4 @@
 FactoryBot.define do
-  factory :photo do
-    
-  end
-
   factory :user do
     sequence :email do |n|
        "dummyEmail#{n}@gmail.com" 
