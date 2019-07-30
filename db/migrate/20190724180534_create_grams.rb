@@ -4,5 +4,6 @@ class CreateGrams < ActiveRecord::Migration[5.2]
       t.text :message
       t.timestamps
     end
+    
   end
 end
