@@ -86,7 +86,9 @@ group :test do
   gem 'shoulda-matchers'
 end
 
+gem "figaro"
 
+gem "fog-aws"
 
 
 
