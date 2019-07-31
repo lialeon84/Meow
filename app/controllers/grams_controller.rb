@@ -2,25 +2,28 @@ class GramsController < ApplicationController
     before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def destroy
-    @gram = Gram.find_by_id(params[:id])
-    return render_not_found(:forbidden) if @gram.user != current_user
-    return render_not_found if @gram.blank?
-    @gram.destroy
-    redirect_to root_path
+  @gram = Gram.find_by_id(params[:id])
+  return render_not_found if @gram.blank?
+  if @gram.user != current_user
+    return render plain: 'Forbidden :(', status: :forbidden
   end
+  @gram.destroy
+  redirect_to root_path
+end
 
   def update
-    @gram = Gram.find_by_id(params[:id])
-    return render_not_found if @gram.blank?
-
-    @gram.update_attributes(gram_params)
-
-    if @gram.valid?
-      redirect_to root_path
-    else
-      return render :edit, status: :unprocessable_entity
-    end
+ @gram = Gram.find_by_id(params[:id])
+  return render_not_found if @gram.blank?
+  if @gram.user != current_user
+    return render plain: 'Forbidden :(', status: :forbidden
   end
+  @gram.update_attributes(gram_params)
+  if @gram.valid?
+    redirect_to root_path
+  else
+    return render :edit, status: :unprocessable_entity
+  end
+end
 
   def new
     @gram = Gram.new
@@ -36,8 +39,11 @@ class GramsController < ApplicationController
   end
 
   def edit
-    @gram = Gram.find_by_id(params[:id])
-    render_not_found if @gram.blank?
+ @gram = Gram.find_by_id(params[:id])
+  return render_not_found if @gram.blank?
+  if @gram.user != current_user
+    render plain: 'Forbidden :(', status: :forbidden
+  end
   end
 
   def create
